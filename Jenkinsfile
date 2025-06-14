@@ -2,10 +2,11 @@ pipeline {
     agent any
     
     environment {
+        // Define common environment variables here
         APP_VERSION = '1.0.0'
-        BUILD_TOOL = 'maven'  
+        BUILD_TOOL = 'maven'  // or 'gradle' depending on your project
         DEPLOY_ENV = 'production'
-        NODE_VERSION = '16.14.2'  
+        NODE_VERSION = '16.14.2'  // example for Node.js projects
     }
     
     stages {
@@ -13,7 +14,8 @@ pipeline {
             steps {
                 echo "Building the app version ${APP_VERSION}"
                 echo "Using build tool: ${BUILD_TOOL}"
-                sh "${BUILD_TOOL} clean package -Dversion=${APP_VERSION}"
+                // Use bat for Windows commands instead of sh
+                bat "${BUILD_TOOL} clean package -Dversion=${APP_VERSION}"
             }
         }
         
@@ -21,15 +23,16 @@ pipeline {
             steps {
                 echo "Running Tests with Node ${NODE_VERSION}"
                 echo "Testing version ${APP_VERSION}"
-                sh "${BUILD_TOOL} test"
+                // Use bat for Windows commands
+                bat "${BUILD_TOOL} test"
             }
         }
         
         stage('Deploy') {
             steps {
                 echo "Deploying version ${APP_VERSION} to ${DEPLOY_ENV}"
-                // Example deploy command
-                sh "deploy-script --env ${DEPLOY_ENV} --version ${APP_VERSION}"
+                // Use bat for Windows commands
+                bat "deploy-script --env ${DEPLOY_ENV} --version ${APP_VERSION}"
             }
         }
         
